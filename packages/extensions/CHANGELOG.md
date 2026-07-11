@@ -1,5 +1,12 @@
 # Change Log
 
+## 3.27.4
+
+### Patch Changes
+
+- @tiptap/core@3.27.4
+- @tiptap/pm@3.27.4
+
 ## 3.27.3
 
 ### Patch Changes
@@ -777,7 +784,7 @@
   Usage:
 
   ```ts
-  import { CharacterCount, CharacterCountOptions } from '@tiptap/extensions'
+  import { CharacterCount, CharacterCountOptions } from "@tiptap/extensions";
   ```
 
   ## DropCursor
@@ -794,7 +801,7 @@
   Usage:
 
   ```ts
-  import { DropCursor, DropCursorOptions } from '@tiptap/extensions'
+  import { DropCursor, DropCursorOptions } from "@tiptap/extensions";
   ```
 
   ## GapCursor
@@ -811,7 +818,7 @@
   Usage:
 
   ```ts
-  import { GapCursor } from '@tiptap/extensions'
+  import { GapCursor } from "@tiptap/extensions";
   ```
 
   ## History
@@ -828,7 +835,7 @@
   Usage:
 
   ```ts
-  import { UndoRedo, UndoRedoOptions } from '@tiptap/extensions'
+  import { UndoRedo, UndoRedoOptions } from "@tiptap/extensions";
   ```
 
   ## Placeholder
@@ -845,7 +852,7 @@
   Usage:
 
   ```ts
-  import { Placeholder, PlaceholderOptions } from '@tiptap/extensions'
+  import { Placeholder, PlaceholderOptions } from "@tiptap/extensions";
   ```
 
   ## TrailingNode
@@ -853,7 +860,7 @@
   This extension adds a node at the end of the editor, which can be used to add a trailing node like a paragraph.
 
   ```ts
-  import { TrailingNode, TrailingNodeOptions } from '@tiptap/extensions'
+  import { TrailingNode, TrailingNodeOptions } from "@tiptap/extensions";
   ```
 
   ## Focus
@@ -870,7 +877,7 @@
   Usage:
 
   ```ts
-  import { Focus, FocusOptions } from '@tiptap/extensions'
+  import { Focus, FocusOptions } from "@tiptap/extensions";
   ```
 
   ## Selection
@@ -878,7 +885,7 @@
   This extension adds a selection state to the editor, which can be used to style the editor when there's a selection.
 
   ```ts
-  import { Selection, SelectionOptions } from '@tiptap/extensions'
+  import { Selection, SelectionOptions } from "@tiptap/extensions";
   ```
 
 - ce47182: Remove selection decoration when editor is on dragging mode
@@ -1187,7 +1194,7 @@
   Usage:
 
   ```ts
-  import { CharacterCount, CharacterCountOptions } from '@tiptap/extensions'
+  import { CharacterCount, CharacterCountOptions } from "@tiptap/extensions";
   ```
 
   ## DropCursor
@@ -1204,7 +1211,7 @@
   Usage:
 
   ```ts
-  import { DropCursor, DropCursorOptions } from '@tiptap/extensions'
+  import { DropCursor, DropCursorOptions } from "@tiptap/extensions";
   ```
 
   ## GapCursor
@@ -1221,7 +1228,7 @@
   Usage:
 
   ```ts
-  import { GapCursor } from '@tiptap/extensions'
+  import { GapCursor } from "@tiptap/extensions";
   ```
 
   ## History
@@ -1238,7 +1245,7 @@
   Usage:
 
   ```ts
-  import { History, HistoryOptions } from '@tiptap/extensions'
+  import { History, HistoryOptions } from "@tiptap/extensions";
   ```
 
   ## Placeholder
@@ -1255,7 +1262,7 @@
   Usage:
 
   ```ts
-  import { Placeholder, PlaceholderOptions } from '@tiptap/extensions'
+  import { Placeholder, PlaceholderOptions } from "@tiptap/extensions";
   ```
 
   ## TrailingNode
@@ -1263,7 +1270,7 @@
   This extension adds a node at the end of the editor, which can be used to add a trailing node like a paragraph.
 
   ```ts
-  import { TrailingNode, TrailingNodeOptions } from '@tiptap/extensions'
+  import { TrailingNode, TrailingNodeOptions } from "@tiptap/extensions";
   ```
 
   ## Focus
@@ -1280,7 +1287,7 @@
   Usage:
 
   ```ts
-  import { Focus, FocusOptions } from '@tiptap/extensions'
+  import { Focus, FocusOptions } from "@tiptap/extensions";
   ```
 
   ## Selection
@@ -1288,7 +1295,7 @@
   This extension adds a selection state to the editor, which can be used to style the editor when there's a selection.
 
   ```ts
-  import { Selection, SelectionOptions } from '@tiptap/extensions'
+  import { Selection, SelectionOptions } from "@tiptap/extensions";
   ```
 
 ## 3.0.0-next.5
