@@ -1,5 +1,2135 @@
 # Releases
 
+## v4.0.0-next.0
+
+### @tiptap/core
+
+#### Major Changes
+
+- b27c874: Keep unmounted editors alive and build React and Vue NodeViews once per mount. Unmounting preserves the document, selection, and plugins. Autofocus runs only on the first mount. Repeated mounts at the same element and repeated unmounts do nothing. Destroyed editors cannot mount again.
+  
+  Migration: use `editor.isMounted` before reading view DOM. `editor.isDestroyed` is true only after `destroy()`. React `useEditor` and Vue `Editor` now wait for `EditorContent` to mount the view by default. For a view without `EditorContent`, pass an `element` or call `editor.mount(element)`. Use `unmount()` for temporary removal and `destroy()` for final cleanup. Mount and unmount events now follow `EditorContent` attachment and removal.
+
+#### Minor Changes
+
+- b27c874: Add the `schemaSpec` editor option to use an external ProseMirror schema structure with local extension behavior.
+
+#### Patch Changes
+
+- b27c874: Nested lists exported to Markdown now keep their hierarchy when the file is read back by other Markdown tools.
+- b27c874: Fix a `TypeError` thrown when the source editor is destroyed right after dragging content into another editor.
+- b27c874: Fix a denial-of-service risk where crafted block or inline Markdown attributes could consume excessive CPU and block the browser or server event loop.
+- b27c874: `splitBlock` no longer throws `TransformError: Inserted content deeper than insertion position` when the selection spans block boundaries (for example from the start of one paragraph into another block, or across an isolating node). The command now returns `false` when the split is not possible.
+- b27c874: Large transactions (for example a big paste with Link autolink enabled) are processed faster.
+- b27c874: Prevent extra CSS declarations from being rendered from editor content.
+- b27c874: Atom block directives (`:::name {…} :::`) indented by up to 3 spaces are now tokenized, matching CommonMark indentation rules for block constructs.
+- b27c874: Numeric HTML entities (`&#39;`, `&#x27;`) are now decoded when parsing markdown, instead of showing up as literal text in the editor.
+- b27c874: The editor element keeps `role="textbox"` after `setOptions()` when `editorProps.attributes` is set. Before, a re-render in React replaced the default role with the user attributes. Attributes passed as a function now get the default role as well.
+- b27c874: Undoing an input rule restores the Markdown characters that triggered it when using Collaboration.
+- b27c874: Keep indented Markdown task-item continuation lines in the same paragraph instead of turning them into separate paragraphs or code blocks.
+- b27c874: Indent continuation lines when exporting Markdown task items so they stay inside the item when imported again.
+- b27c874: Keep Markdown task-item continuation lines in the same paragraph when the opening text resembles a heading or list, including tasks nested inside bullet lists.
+- b27c874: Preserve task-list continuation text with custom block tokenizers and tab indentation.
+- b27c874: Fix callback updates through `setOptions()`. Changes to initial options such as `content`, `extensions`, and `schemaSpec` are now ignored with a development warning.
+  
+  Use `editor.commands.setContent(content)` to replace content. Create a new editor to change extensions or the schema. Use `EditorRuntimeOptions` and `getEditorRuntimeOptions()` to select options supported by `setOptions()`.
+- b27c874: Pressing Enter with text selected inside a code block or heading in a list item no longer throws `TransformError: Inconsistent open depths` or leaves the selection deleted without splitting.
+- b27c874: `deleteSelection` keeps the marks of the deleted text again, so typing after deleting bold text is bold, like in ProseMirror.
+- b27c874: Markdown lexer tokens for a task list at the end of the input now match the source text when it has no final newline.
+- b27c874: Fix list toggling between list types that use different item nodes. Nested lists are recursively converted when the target item schema supports nesting, and flattened into sibling items when it does not.
+- b27c874: Fix freezes in framework-based node views on iOS and Android
+- b27c874: Bind `parseMarkdown` and `renderMarkdown` to the configured extension so hooks can read `this.options` and `this.name` without an Editor.
+- b27c874: Prevent untrusted HTML attributes from changing an object's prototype when merged with `mergeAttributes`.
+- b27c874: Pressing Enter before the text of a checked task item now leaves the new empty item unchecked and the item with the text checked. Attributes declared with `keepOnSplit: false` now reset on the new item, not on the one that keeps the text.
+- b27c874: Stop joinItemForward and joinItemBackward from joining across isolating nodes.
+- b27c874: Node views without a `contentDOM` no longer ignore selection mutations, so ProseMirror moves the caret back to a valid position when the browser places it inside the node view.
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+  - @tiptap/pm@4.0.0-next.0
+
+### @tiptap/extension-list
+
+#### Patch Changes
+
+- b27c874: Nested lists exported to Markdown now keep their hierarchy when the file is read back by other Markdown tools.
+- b27c874: Parsing large Markdown documents that contain ordered lists is much faster. A 578KB document went from about 19s to about 160ms.
+- b27c874: Courtesy titles such as "Ms." and "Dr." are no longer parsed as ordered-list markers. Numbered, lettered, and roman lists are unchanged.
+- b27c874: Indent continuation lines when exporting Markdown task items so they stay inside the item when imported again.
+- b27c874: Fixed Markdown list items that start with a heading, quote or other non-paragraph block, which produced invalid documents. They now parse with a leading paragraph. Empty nested list items are written as `- &nbsp;`, so they no longer turn the parent item into a heading when read back.
+- b27c874: Pressing Delete on a selection that starts at the end of a list item now deletes the selected text instead of only joining the items.
+- b27c874: Keep the cursor after tables on Backspace and join nested list text correctly on Delete.
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+  - @tiptap/core@4.0.0-next.0
+  - @tiptap/pm@4.0.0-next.0
+
+### @tiptap/ai-toolkit
+
+#### Patch Changes
+
+- b27c874: The Server AI Toolkit no longer adds `_hash` to inline nodes, including inline Image, Audio, YouTube and Twitch nodes.
+- b27c874: Keep collaborative editing, cursor presence, and drag handles compatible with the updated `@tiptap/y-tiptap` binding.
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+  - @tiptap/core@4.0.0-next.0
+  - @tiptap/pm@4.0.0-next.0
+  - @tiptap/y-tiptap@3.0.10-next.0
+
+### @tiptap/extension-mathematics
+
+#### Patch Changes
+
+- b27c874: The mathematics extension no longer crashes the editor in older WebKit browsers and WKWebView.
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+  - @tiptap/core@4.0.0-next.0
+  - @tiptap/pm@4.0.0-next.0
+
+### @tiptap/extension-youtube
+
+#### Patch Changes
+
+- b27c874: Pasting a YouTube iframe without a `src` attribute no longer crashes the editor. The embed is kept without a source.
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+  - @tiptap/core@4.0.0-next.0
+
+### @tiptap/starter-kit
+
+#### Major Changes
+
+- b27c874: StarterKit no longer installs the deprecated `@tiptap/extension-dropcursor`, `@tiptap/extension-gapcursor`, `@tiptap/extension-list-item`, and `@tiptap/extension-list-keymap` packages. We will not publish further updates to these packages. StarterKit still includes their extensions, so you do not need to change your configuration.
+  
+  If you import these extensions directly, switch to the new packages: `Dropcursor` and `Gapcursor` from `@tiptap/extensions`, and `ListItem` and `ListKeymap` from `@tiptap/extension-list`.
+
+#### Patch Changes
+
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+  - @tiptap/core@4.0.0-next.0
+  - @tiptap/extension-list@4.0.0-next.0
+  - @tiptap/pm@4.0.0-next.0
+  - @tiptap/extension-code@4.0.0-next.0
+  - @tiptap/extension-link@4.0.0-next.0
+  - @tiptap/extension-underline@4.0.0-next.0
+  - @tiptap/extensions@4.0.0-next.0
+  - @tiptap/extension-heading@4.0.0-next.0
+  - @tiptap/extension-blockquote@4.0.0-next.0
+  - @tiptap/extension-bold@4.0.0-next.0
+  - @tiptap/extension-code-block@4.0.0-next.0
+  - @tiptap/extension-document@4.0.0-next.0
+  - @tiptap/extension-hard-break@4.0.0-next.0
+  - @tiptap/extension-horizontal-rule@4.0.0-next.0
+  - @tiptap/extension-italic@4.0.0-next.0
+  - @tiptap/extension-paragraph@4.0.0-next.0
+  - @tiptap/extension-strike@4.0.0-next.0
+  - @tiptap/extension-text@4.0.0-next.0
+  - @tiptap/extension-bullet-list@4.0.0-next.0
+  - @tiptap/extension-ordered-list@4.0.0-next.0
+
+### @tiptap/markdown
+
+#### Patch Changes
+
+- b27c874: Fix Markdown serialization of whitespace-only marked text.
+- b27c874: Fix Markdown serialization of inline code containing backticks
+- b27c874: A literal `!` directly before a link is now escaped when serializing to Markdown, so the link is no longer parsed back as an image.
+- b27c874: Keep Markdown task-item continuation lines in the same paragraph when the opening text resembles a heading or list, including tasks nested inside bullet lists.
+- b27c874: Preserve task-list continuation text with custom block tokenizers and tab indentation.
+- b27c874: Bind `parseMarkdown` and `renderMarkdown` to the configured extension so hooks can read `this.options` and `this.name` without an Editor.
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+  - @tiptap/core@4.0.0-next.0
+  - @tiptap/pm@4.0.0-next.0
+
+### @tiptap/extension-mention
+
+#### Patch Changes
+
+- b27c874: Fix a denial-of-service risk where crafted block or inline Markdown attributes could consume excessive CPU and block the browser or server event loop.
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+  - @tiptap/core@4.0.0-next.0
+  - @tiptap/pm@4.0.0-next.0
+  - @tiptap/suggestion@4.0.0-next.0
+
+### @tiptap/extension-collaboration-caret
+
+#### Patch Changes
+
+- b27c874: Fixed a bug which allowed potentially unsafe color values being sent by other clients. Those unsafe colors received from collaboration users are now ignored.
+- b27c874: Prevent extra CSS declarations from being rendered from editor content.
+- b27c874: Keep collaborative editing, cursor presence, and drag handles compatible with the updated `@tiptap/y-tiptap` binding.
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+  - @tiptap/core@4.0.0-next.0
+  - @tiptap/pm@4.0.0-next.0
+  - @tiptap/y-tiptap@3.0.10-next.0
+
+### @tiptap/react
+
+#### Major Changes
+
+- b27c874: Keep unmounted editors alive and build React and Vue NodeViews once per mount. Unmounting preserves the document, selection, and plugins. Autofocus runs only on the first mount. Repeated mounts at the same element and repeated unmounts do nothing. Destroyed editors cannot mount again.
+  
+  Migration: use `editor.isMounted` before reading view DOM. `editor.isDestroyed` is true only after `destroy()`. React `useEditor` and Vue `Editor` now wait for `EditorContent` to mount the view by default. For a view without `EditorContent`, pass an `element` or call `editor.mount(element)`. Use `unmount()` for temporary removal and `destroy()` for final cleanup. Mount and unmount events now follow `EditorContent` attachment and removal.
+
+#### Minor Changes
+
+- b27c874: Align `selected` with ProseMirror node selections by default, expose text selections through `selectionInside`, and keep `selectedOnTextSelection` compatible.
+
+#### Patch Changes
+
+- b27c874: Reduce overhead in React node views on documents with many nodes.
+- b27c874: Fix a TypeScript error (TS2694) in the shipped type declarations when `skipLibCheck` is turned off.
+- b27c874: Fix Enter and Shift-Enter inside React node views on iOS and Android.
+- b27c874: Fix `useEditorState` overflowing the stack when a selector returns a value with circular references, such as `editor.state` after one stored mark replaces another.
+- b27c874: Fix callback updates through `setOptions()`. Changes to initial options such as `content`, `extensions`, and `schemaSpec` are now ignored with a development warning.
+  
+  Use `editor.commands.setContent(content)` to replace content. Create a new editor to change extensions or the schema. Use `EditorRuntimeOptions` and `getEditorRuntimeOptions()` to select options supported by `setOptions()`.
+- b27c874: `@tiptap/react` and `@tiptap/vue` now pin their optional `@tiptap/extension-bubble-menu` and `@tiptap/extension-floating-menu` dependencies to the exact version they were released with, so installing a specific version gives you that version's menu extensions instead of the newest ones.
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+  - @tiptap/core@4.0.0-next.0
+  - @tiptap/pm@4.0.0-next.0
+
+### @tiptap/pm
+
+#### Patch Changes
+
+- b27c874: Bump `prosemirror-view` to `^1.42.3`, which fixes an XSS vulnerability where pasting crafted HTML could run arbitrary JavaScript (GHSA-c8x8-7fp4-3x9w).
+- b27c874: Update ProseMirror dependencies to their latest versions.
+
+### @tiptap/extension-code
+
+#### Patch Changes
+
+- b27c874: Fix Markdown serialization of inline code containing backticks
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+  - @tiptap/core@4.0.0-next.0
+
+### @tiptap/extension-table
+
+#### Patch Changes
+
+- b27c874: Table cells exported to Markdown now escape literal pipe characters, so the cell content survives when the output is read back.
+- b27c874: Multi-block table cells no longer leak a U+001F control character into Markdown.
+- b27c874: Right-clicking a cell inside a multi-cell table selection no longer collapses that selection.
+- b27c874: Prevent extra CSS declarations from being rendered from editor content.
+- b27c874: Apply custom table attributes when resizing is enabled and keep them current after attribute changes.
+- b27c874: Table cells and headers no longer render the default `colspan="1"` and `rowspan="1"` attributes. Cells that actually span still render them, matching how prosemirror-tables serializes spans.
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+  - @tiptap/core@4.0.0-next.0
+  - @tiptap/pm@4.0.0-next.0
+
+### @tiptap/extension-highlight
+
+#### Patch Changes
+
+- b27c874: Prevent extra CSS declarations from being rendered from editor content.
+- b27c874: Markdown like `a == b and c == d` is no longer imported as highlighted text.
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+  - @tiptap/core@4.0.0-next.0
+
+### @tiptap/extension-text-align
+
+#### Patch Changes
+
+- b27c874: Prevent extra CSS declarations from being rendered from editor content.
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+  - @tiptap/core@4.0.0-next.0
+
+### @tiptap/extension-text-style
+
+#### Patch Changes
+
+- b27c874: Prevent extra CSS declarations from being rendered from editor content.
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+  - @tiptap/core@4.0.0-next.0
+
+### @tiptap/extension-link
+
+#### Patch Changes
+
+- b27c874: Typing spaces after a link no longer extends the link, including multiple spaces inserted in one transaction. Formatting changes and undo/redo preserve existing linked whitespace.
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+  - @tiptap/core@4.0.0-next.0
+  - @tiptap/pm@4.0.0-next.0
+
+### @tiptap/static-renderer
+
+#### Patch Changes
+
+- b27c874: Render `<audio>` and `<video>` with a closing tag instead of self-closing them, so browsers no longer nest the following content inside the first audio element.
+- b27c874: Rendering a node whose `renderHTML` returns several nested child elements no longer adds stray commas between them in the HTML string output.
+- b27c874: Headings with bold, italic, or linked text now render to Markdown without extra commas between the words.
+- b27c874: Prevent attribute names, inline event handlers, and iframe srcdoc attributes from injecting executable HTML into static HTML output.
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+  - @tiptap/core@4.0.0-next.0
+  - @tiptap/pm@4.0.0-next.0
+
+### @tiptap/extension-collaboration
+
+#### Patch Changes
+
+- b27c874: Undoing an input rule restores the Markdown characters that triggered it when using Collaboration.
+- b27c874: Keep collaborative editing, cursor presence, and drag handles compatible with the updated `@tiptap/y-tiptap` binding.
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+  - @tiptap/core@4.0.0-next.0
+  - @tiptap/pm@4.0.0-next.0
+  - @tiptap/y-tiptap@3.0.10-next.0
+
+### @tiptap/extension-underline
+
+#### Patch Changes
+
+- b27c874: Export underlined text as `<u>text</u>` in Markdown. Treat `++` as plain text when parsing, so C++ mentions keep their plus signs.
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+  - @tiptap/core@4.0.0-next.0
+
+### @tiptap/suggestion
+
+#### Patch Changes
+
+- b27c874: Escape `allowedPrefixes` when building the suggestion prefix regex so `-`, `]`, `^`, and `\` are treated as literals.
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+  - @tiptap/core@4.0.0-next.0
+  - @tiptap/pm@4.0.0-next.0
+
+### @tiptap/extension-drag-handle
+
+#### Patch Changes
+
+- b27c874: Fix the nested drag handle targeting the next block, or staying on the previous one, while the pointer is over the lower half of an image or other block atom.
+- b27c874: Keep collaborative editing, cursor presence, and drag handles compatible with the updated `@tiptap/y-tiptap` binding.
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+  - @tiptap/core@4.0.0-next.0
+  - @tiptap/pm@4.0.0-next.0
+  - @tiptap/extension-collaboration@4.0.0-next.0
+  - @tiptap/y-tiptap@3.0.10-next.0
+  - @tiptap/extension-node-range@4.0.0-next.0
+
+### @tiptap/y-tiptap
+
+#### Patch Changes
+
+- b27c874: Keep relative text and node positions attached through structural edits, node moves, and undo or redo across collaborating clients.
+- b27c874: Improve TypeScript definitions for document synchronization, shared cursors, undo, redo, and document conversions.
+- b27c874: Improve collaboration performance and keep comments, highlights, caret positions, and remote caret details intact during remote edits.
+- b27c874: Preserve shared content when a client cannot display its nodes or marks, and pause that client's editing until compatible content is available.
+  
+  Headless document creation rejects empty content when the schema requires child nodes.
+
+### @tiptap/vue
+
+#### Major Changes
+
+- b27c874: Keep unmounted editors alive and build React and Vue NodeViews once per mount. Unmounting preserves the document, selection, and plugins. Autofocus runs only on the first mount. Repeated mounts at the same element and repeated unmounts do nothing. Destroyed editors cannot mount again.
+  
+  Migration: use `editor.isMounted` before reading view DOM. `editor.isDestroyed` is true only after `destroy()`. React `useEditor` and Vue `Editor` now wait for `EditorContent` to mount the view by default. For a view without `EditorContent`, pass an `element` or call `editor.mount(element)`. Use `unmount()` for temporary removal and `destroy()` for final cleanup. Mount and unmount events now follow `EditorContent` attachment and removal.
+- b27c874: Vue 2 support is removed. `@tiptap/vue-3` is now `@tiptap/vue`, and `@tiptap/extension-drag-handle-vue-3` is now `@tiptap/extension-drag-handle-vue`.
+  
+  Update imports and dependencies:
+  
+  ```diff
+  - import { EditorContent } from '@tiptap/vue-3'
+  + import { EditorContent } from '@tiptap/vue'
+  
+  - import DragHandle from '@tiptap/extension-drag-handle-vue-3'
+  + import DragHandle from '@tiptap/extension-drag-handle-vue'
+  ```
+  
+  Vue 2 users must migrate to Vue 3 before using the new packages. The planned Codemod Registry package `@tiptap/codemod-v3-to-v4` updates package imports and dependencies.
+
+#### Patch Changes
+
+- b27c874: Fix callback updates through `setOptions()`. Changes to initial options such as `content`, `extensions`, and `schemaSpec` are now ignored with a development warning.
+  
+  Use `editor.commands.setContent(content)` to replace content. Create a new editor to change extensions or the schema. Use `EditorRuntimeOptions` and `getEditorRuntimeOptions()` to select options supported by `setOptions()`.
+- b27c874: `@tiptap/react` and `@tiptap/vue` now pin their optional `@tiptap/extension-bubble-menu` and `@tiptap/extension-floating-menu` dependencies to the exact version they were released with, so installing a specific version gives you that version's menu extensions instead of the newest ones.
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+  - @tiptap/core@4.0.0-next.0
+  - @tiptap/pm@4.0.0-next.0
+
+### @tiptap/extensions
+
+#### Minor Changes
+
+- b27c874: Add `setPlaceholder(value)` and `setCharacterLimit(limit)` to change placeholders and character limits on a running editor. Lowering the limit keeps existing text. Pass `null` to remove the limit.
+
+#### Patch Changes
+
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+  - @tiptap/core@4.0.0-next.0
+  - @tiptap/pm@4.0.0-next.0
+
+### @tiptap/extension-table-of-contents
+
+#### Patch Changes
+
+- b27c874: Skip table of contents updates until the editor is mounted.
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+  - @tiptap/core@4.0.0-next.0
+  - @tiptap/pm@4.0.0-next.0
+
+### @tiptap/extension-heading
+
+#### Patch Changes
+
+- b27c874: Ensure Markdown parsing respects the configured `levels` option by falling back to paragraphs for unconfigured heading levels.
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+  - @tiptap/core@4.0.0-next.0
+
+### @tiptap/extension-drag-handle-vue
+
+#### Major Changes
+
+- b27c874: Vue 2 support is removed. `@tiptap/vue-3` is now `@tiptap/vue`, and `@tiptap/extension-drag-handle-vue-3` is now `@tiptap/extension-drag-handle-vue`.
+  
+  Update imports and dependencies:
+  
+  ```diff
+  - import { EditorContent } from '@tiptap/vue-3'
+  + import { EditorContent } from '@tiptap/vue'
+  
+  - import DragHandle from '@tiptap/extension-drag-handle-vue-3'
+  + import DragHandle from '@tiptap/extension-drag-handle-vue'
+  ```
+  
+  Vue 2 users must migrate to Vue 3 before using the new packages. The planned Codemod Registry package `@tiptap/codemod-v3-to-v4` updates package imports and dependencies.
+
+#### Patch Changes
+
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+  - @tiptap/pm@4.0.0-next.0
+  - @tiptap/extension-drag-handle@4.0.0-next.0
+  - @tiptap/vue@4.0.0-next.0
+
+### @tiptap/extension-audio
+
+#### Patch Changes
+
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+  - @tiptap/core@4.0.0-next.0
+
+### @tiptap/extension-blockquote
+
+#### Patch Changes
+
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+  - @tiptap/core@4.0.0-next.0
+  - @tiptap/pm@4.0.0-next.0
+
+### @tiptap/extension-bold
+
+#### Patch Changes
+
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+  - @tiptap/core@4.0.0-next.0
+
+### @tiptap/extension-bubble-menu
+
+#### Patch Changes
+
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+  - @tiptap/core@4.0.0-next.0
+  - @tiptap/pm@4.0.0-next.0
+
+### @tiptap/extension-code-block
+
+#### Patch Changes
+
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+  - @tiptap/core@4.0.0-next.0
+  - @tiptap/pm@4.0.0-next.0
+
+### @tiptap/extension-code-block-lowlight
+
+#### Patch Changes
+
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+  - @tiptap/core@4.0.0-next.0
+  - @tiptap/pm@4.0.0-next.0
+  - @tiptap/extension-code-block@4.0.0-next.0
+
+### @tiptap/extension-details
+
+#### Patch Changes
+
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+  - @tiptap/core@4.0.0-next.0
+  - @tiptap/pm@4.0.0-next.0
+  - @tiptap/extension-text-style@4.0.0-next.0
+
+### @tiptap/extension-document
+
+#### Patch Changes
+
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+  - @tiptap/core@4.0.0-next.0
+
+### @tiptap/extension-emoji
+
+#### Patch Changes
+
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+  - @tiptap/core@4.0.0-next.0
+  - @tiptap/pm@4.0.0-next.0
+  - @tiptap/suggestion@4.0.0-next.0
+
+### @tiptap/extension-file-handler
+
+#### Patch Changes
+
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+  - @tiptap/core@4.0.0-next.0
+  - @tiptap/pm@4.0.0-next.0
+  - @tiptap/extension-text-style@4.0.0-next.0
+
+### @tiptap/extension-find-and-replace
+
+#### Patch Changes
+
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+  - @tiptap/core@4.0.0-next.0
+  - @tiptap/pm@4.0.0-next.0
+
+### @tiptap/extension-floating-menu
+
+#### Patch Changes
+
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+  - @tiptap/core@4.0.0-next.0
+  - @tiptap/pm@4.0.0-next.0
+
+### @tiptap/extension-hard-break
+
+#### Patch Changes
+
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+  - @tiptap/core@4.0.0-next.0
+
+### @tiptap/extension-horizontal-rule
+
+#### Patch Changes
+
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+  - @tiptap/core@4.0.0-next.0
+  - @tiptap/pm@4.0.0-next.0
+
+### @tiptap/extension-image
+
+#### Patch Changes
+
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+  - @tiptap/core@4.0.0-next.0
+
+### @tiptap/extension-invisible-characters
+
+#### Patch Changes
+
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+  - @tiptap/core@4.0.0-next.0
+  - @tiptap/pm@4.0.0-next.0
+  - @tiptap/extension-text-style@4.0.0-next.0
+
+### @tiptap/extension-italic
+
+#### Patch Changes
+
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+  - @tiptap/core@4.0.0-next.0
+
+### @tiptap/extension-node-range
+
+#### Patch Changes
+
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+  - @tiptap/core@4.0.0-next.0
+  - @tiptap/pm@4.0.0-next.0
+
+### @tiptap/extension-paragraph
+
+#### Patch Changes
+
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+  - @tiptap/core@4.0.0-next.0
+
+### @tiptap/extension-ruby-text
+
+#### Patch Changes
+
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+  - @tiptap/core@4.0.0-next.0
+  - @tiptap/pm@4.0.0-next.0
+
+### @tiptap/extension-strike
+
+#### Patch Changes
+
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+  - @tiptap/core@4.0.0-next.0
+
+### @tiptap/extension-subscript
+
+#### Patch Changes
+
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+  - @tiptap/core@4.0.0-next.0
+  - @tiptap/pm@4.0.0-next.0
+
+### @tiptap/extension-superscript
+
+#### Patch Changes
+
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+  - @tiptap/core@4.0.0-next.0
+  - @tiptap/pm@4.0.0-next.0
+
+### @tiptap/extension-text
+
+#### Patch Changes
+
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+  - @tiptap/core@4.0.0-next.0
+
+### @tiptap/extension-twitch
+
+#### Patch Changes
+
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+  - @tiptap/core@4.0.0-next.0
+
+### @tiptap/extension-typography
+
+#### Patch Changes
+
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+  - @tiptap/core@4.0.0-next.0
+
+### @tiptap/extension-unique-id
+
+#### Patch Changes
+
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+  - @tiptap/core@4.0.0-next.0
+  - @tiptap/pm@4.0.0-next.0
+
+### @tiptap/html
+
+#### Patch Changes
+
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+  - @tiptap/core@4.0.0-next.0
+  - @tiptap/pm@4.0.0-next.0
+
+### @tiptap/extension-bullet-list
+
+#### Patch Changes
+
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+  - @tiptap/extension-list@4.0.0-next.0
+
+### @tiptap/extension-ordered-list
+
+#### Patch Changes
+
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+  - @tiptap/extension-list@4.0.0-next.0
+
+### @tiptap/extension-drag-handle-react
+
+#### Patch Changes
+
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+- Updated dependencies [b27c874]
+  - @tiptap/react@4.0.0-next.0
+  - @tiptap/pm@4.0.0-next.0
+  - @tiptap/extension-drag-handle@4.0.0-next.0
+
+### @tiptap/extension-color
+
+#### Patch Changes
+
+- Updated dependencies [b27c874]
+  - @tiptap/extension-text-style@4.0.0-next.0
+
+### @tiptap/extension-font-family
+
+#### Patch Changes
+
+- Updated dependencies [b27c874]
+  - @tiptap/extension-text-style@4.0.0-next.0
+
 ## v3.30.3
 
 ### @tiptap/extension-text-style
